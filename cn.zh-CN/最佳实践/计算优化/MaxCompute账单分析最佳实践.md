@@ -35,7 +35,7 @@
 
     ```
     --csv的表头
-    项目编号，计量信息编号，数据分类，存储（Byte），SQL读取量（Byte），SQL复杂度（Byte），公网上行流量（Byte），公网下行流量（Byte），MR作业计算，开始时间，结束时间，SQL读取量_访问OTS（Byte，,SQL读取量_访问OSS（Byte）
+    "项目编号","计量信息编号","数据分类","存储（Byte）","结束时间","SQL/交互式分析 读取量（Byte）","SQL复杂度","公网上行流量（Byte）","公网下行流量（Byte）","MR/Spark作业计算（Core*Second）","SQL读取量_访问OTS（Byte）","SQL读取量_访问OSS（Byte）","开始时间","计算资源规格","DataWorks调度任务ID"
     ```
 
 
@@ -73,23 +73,24 @@
     ```
     DROP TABLE IF EXISTS maxcomputefee ;
     
-    CREATE TABLE IF NOT EXISTS maxcomputefee 
-    (
-        projectid STRING COMMENT '项目编号'
-        ,feeid STRING COMMENT '计费信息编号'
-        ,type STRING COMMENT '数据分类，包括Storage、ComputationSQL、DownloadEx等'
-        ,starttime DATETIME COMMENT '开始时间'
-        ,storage BIGINT COMMENT '存储量'
-        ,endtime DATETIME COMMENT '结束时间'
-        ,computationsqlinput BIGINT COMMENT '输入数据量'
-        ,computationsqlcomplexity DOUBLE COMMENT 'sql复杂度'
-        ,uploadex BIGINT COMMENT '公网上行流量Byte'
-        ,download BIGINT COMMENT '公网下行流量Byte'
-        ,cu_usage DOUBLE COMMENT 'MR计算时*second'
-        ,input_ots BIGINT COMMENT '访问OTS的数据输入量'
-        ,input_oss BIGINT COMMENT'访问OSS的数据输入量'
-    )
-    ;
+CREATE TABLE IF NOT EXISTS maxcomputefee 
+(
+    projectid STRING COMMENT '项目编号'
+    ,feeid STRING COMMENT '计费信息编号'
+    ,type STRING COMMENT '数据分类，包括Storage、ComputationSQL、DownloadEx等'
+    ,storage BIGINT COMMENT '存储（Byte）'
+    ,endtime DATETIME COMMENT '结束时间'
+    ,computationsqlinput BIGINT COMMENT 'SQL/交互式分析 读取量（Byte）'
+    ,computationsqlcomplexity DOUBLE COMMENT 'sql复杂度'
+    ,uploadex BIGINT COMMENT '公网上行流量Byte'
+    ,download BIGINT COMMENT '公网下行流量Byte'
+    ,cu_usage DOUBLE COMMENT 'MR计算时*second'
+    ,input_ots BIGINT COMMENT '访问OTS的数据输入量'
+    ,input_oss BIGINT COMMENT'访问OSS的数据输入量'
+    ,starttime DATETIME COMMENT '开始时间'
+    ,source_type String COMMENT '计算资源'
+    ,source_id String COMMENT 'DataWorks调度任务ID'
+);
     ```
 
 4.  Tunnel上传数据，具体Tunnel的配置详见[Tunnel命令操作](../../../../../cn.zh-CN/用户指南/数据上传下载/Tunnel命令操作.md#)。
